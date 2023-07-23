@@ -1,2 +1,2 @@
 # E-Store
-ecommerce backend powered by Django Rest API.
+ecommerce app backend powered by Django Rest API.
