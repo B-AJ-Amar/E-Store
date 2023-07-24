@@ -6,15 +6,15 @@ import os
 
     
 def get_photo_upload_path(instance, filename):
-    id = instance.product_id.id
+    id = instance.product.id
     return os.path.join('product-photos', str(id), str(filename))
 
 class Photo(models.Model):
     #id
-    product_id           = models.ForeignKey("products.Product",  on_delete=models.CASCADE)
-    photo                = models.ImageField(upload_to= get_photo_upload_path)
+    product           = models.ForeignKey("products.Product",related_name="poduct_p",  on_delete=models.CASCADE)
+    photo             = models.ImageField(upload_to= get_photo_upload_path)
     def __str__(self):
-        return f"{self.photo}"
+        return f"{self.product.name}"
    
 class Category(models.Model):
     # id

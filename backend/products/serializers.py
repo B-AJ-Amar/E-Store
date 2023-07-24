@@ -5,16 +5,17 @@ from .models import *
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model=Photo
-        fields=['id','product_id','photo']
+        fields=['id','photo']
  
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model=Category
-        fields=['id','name',]
+        fields="__all__"
                
 class ProductSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(many=True)
-    photos = PhotoSerializer(many=True)
+    categores = CategorySerializer(many=True)
+    photos = PhotoSerializer(source='poduct_p',many=True, read_only=True)
     class Meta:
         model=Product
-        fields=['id','name','price','categories','photos']
+        fields="__all__"
+        fields = ["id","name","stock_quantity","price","categores","photos",]
