@@ -6,17 +6,16 @@ import os
 
     
 def get_photo_upload_path(instance, filename):
-    id = instance.id
+    id = instance.product_id.id
     return os.path.join('product-photos', str(id), str(filename))
 
 class Photo(models.Model):
     #id
     product_id           = models.ForeignKey("products.Product",  on_delete=models.CASCADE)
     photo                = models.ImageField(upload_to= get_photo_upload_path)
-    
-    def __str__(self) -> str:
-        return self.photo
-    
+    def __str__(self):
+        return f"{self.photo}"
+   
 class Category(models.Model):
     # id
     name                = models.CharField(max_length=100,unique=True)
@@ -24,7 +23,7 @@ class Category(models.Model):
         ordering = ["name"]
     def __str__(self) :
         # return f"{self.name} {self.Product.name}"
-        return f"{self.id} {self.name}"
+        return f"{self.id}-{self.name}"
     
 class Product(models.Model):
     name                 = models.CharField(max_length=100, blank=True, null=True)
@@ -35,6 +34,7 @@ class Product(models.Model):
     categores            = models.ManyToManyField(Category, related_name='prodcuts', blank=True)
     is_active            = models.BooleanField(default=True)
     def __str__(self) -> str:
-        return f"{self.id} {self.name}"
+        return f"{self.id}-{self.name}"
+    
 
 
