@@ -31,10 +31,12 @@ class Product(models.Model):
     created_date         = models.DateTimeField(default=timezone.now)
     stock_quantity       = models.IntegerField(default=0)
     price                = models.DecimalField(max_digits=6,decimal_places=2)
-    categores            = models.ManyToManyField(Category, related_name='prodcuts', blank=True)
+    categores            = models.ManyToManyField(Category, related_name='prodcuts',blank=True,)
     is_active            = models.BooleanField(default=True)
     def __str__(self) -> str:
         return f"{self.id}-{self.name}"
+    
+
     
 
 

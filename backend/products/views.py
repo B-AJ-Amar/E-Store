@@ -15,8 +15,13 @@ class ProductsList(APIView):
       
         return Response(serializer.data,status=200)
     
-    def post(self,request):
-        serializer = ProductSerializer(data=request.data,many=True)
-        if serializer.is_valid():
-            serializer.save()
+    # def post(self,request):
+    #     serializer = ProductSerializer(data=request.data)
+    #     print(f"data : {request.data}\nfiiles : {request.FILES}")
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(status=201)
+    #     return Response(serializer.errors,status=400)
+    
+            
         
