@@ -7,7 +7,7 @@ from .models import *
 # Create your views here.
 
 
-class ProductsList(APIView):
+class ProductsListView(APIView):
     authentication_classes = ()
     permission_classes     = ()
     def get(self,request):
@@ -24,4 +24,15 @@ class ProductsList(APIView):
     #     return Response(serializer.errors,status=400)
     
             
-        
+class ProductView(APIView):
+    authentication_classes = ()
+    permission_classes     = ()
+    def get(self,request,id):
+        print("id :>>>",id)
+        try:
+            pr = Product.objects.get(id=id,is_active=True)
+            serializer = ProductSerializer(pr)
+            return Response(serializer.data,status=200)
+        except:
+            return Response(serializer.data,status=404)
+           

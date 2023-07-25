@@ -26,18 +26,18 @@ class PhotoSerializer(serializers.ModelSerializer):
         model=Photo
         fields=['photo']
         read_only_fields = ('id', )
-        extra_kwargs = {'photo': {'validators': []},
-                        # 'name': {'write_only': True}
-                        }
+        # extra_kwargs = {'photo': {'validators': []},
+        #                 # 'name': {'write_only': True}
+        #                 }
  
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model=Category
         fields="__all__"
         # read_only_fields = ('name', )
-        extra_kwargs = {'name': {
-                'validators': []
-            }}
+        # extra_kwargs = {'name': {
+        #         'validators': []
+        #     }}
             
         
         
