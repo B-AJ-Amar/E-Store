@@ -4,17 +4,30 @@ from products.models import *
 
 # ! i have problem here i cant serialize quantity and date   
 class OrderProdSerializer(serializers.ModelSerializer):
-    # product_name = serializers.CharField( source='name')
+    product_id = serializers.CharField( source='id')
+    product_name = serializers.CharField( source='name')
     product_price= serializers.DecimalField(max_digits=20,decimal_places=2,source='price')
     # total_price = serializers.SerializerMethodField()
     class Meta:
         model=OrderProd
-        fields=["id","product_price","quantity","date","total_price"]
+        fields=["id","product_id","product_name","product_price","quantity","date","total_price"]
         read_only_fields = ('id', "quantity")
         
     def get_total_price(self, instance):
         return instance.total_price()
-    
+
+class OrderProd2Serializer(serializers.ModelSerializer):
+    # product_id = serializers.CharField( source='id')
+    # product_name = serializers.CharField( source='name')
+    # product_price= serializers.DecimalField(max_digits=20,decimal_places=2,source='price')
+    # total_price = serializers.SerializerMethodField()
+    class Meta:
+        model=OrderProd
+        fields=["id","quantity","date"]
+        read_only_fields = ('id', "quantity")
+        
+    # def get_total_price(self, instance):
+    #     return instance.total_price()
 
 class OrderSerializer(serializers.ModelSerializer):
     
