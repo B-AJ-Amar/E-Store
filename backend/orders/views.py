@@ -53,50 +53,31 @@ class OrderDetailsView(APIView):
     authentication_classes = (BasicAuthentication,)
     permission_classes     = (IsAuthenticated,)
     def get(self,request,id):
-        # try:
-            print("ordest")
-            order = order = Order.objects.get(is_finished=False,user=request.user)
-            print("ordest", order.id)
-            orders = OrderProd.objects.get(order=order,product=Product.objects.get(id=id))
-            print("ordest")
-            serializer = OrderProd2Serializer(orders)
+        try:
+            orders = OrderProd.objects.get(pk=id)
+            serializer = OrderProdSerializer(orders)
             return Response(serializer.data,status=200)
             
-        # except :
-        #     return Response(status=404)
+        except :
+            return Response(status=404)
         
     def put(self,request,id):
         product_quantity = request.data.get("product_quantity")
         try:
-            if product_quantity<0 or not isinstance(product_quantity, int) or  not (id and product_quantity):
+            if product_quantity<0 or not isinstance(product_quantity, int) :
                 return Response(status=400)
-            product = Product.objects.get(pk=int(id))
-           
-            order = Order.objects.filter(is_finished=False,user=request.user).first()
-            if not order:
-                return Response(status=404)
-            orderprod = OrderProd.objects.filter(order=order,product=product).first()
-            if orderprod:
-                orderprod.quantity = product_quantity
-                orderprod.save()
-            else:
-                return Response(status=404)
-            return Response(data={"order_id":orderprod.id,"product_id":id,"product_quantity":product_quantity},status=200)
+            
+            orderdet = OrderProd.objects.get(pk=id)
+            orderdet.quantity = product_quantity
+            orderdet.save()
+
+            return Response(data={"order_id":id,"product_id":orderdet.product.id,"product_quantity":orderdet.quantity},status=200)
         except:
             return Response(status=404)
         
     def delete(self,request,id):
-        # product_id = request.data.get("product_id")
-        # product_quantity = request.data.get("product_quantity")
         try:
-            print("id : ",id)
-            product = Product.objects.get(id=int(id))
-            print("droduct : ",product.name)
-            order = Order.objects.get(is_finished=False,user=request.user)
-            print("order : ",order.id)
-            orderprod = OrderProd.objects.filter(order=order,product=product).delete()
-            print(order,orderprod,product)
-            # orderprod.save()
+            OrderProd.objects.filter(pk=id).delete()
             return Response(status=202)
         except:
             return Response(status=404)
