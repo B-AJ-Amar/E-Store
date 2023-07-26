@@ -20,7 +20,7 @@ class LogInView(TokenObtainPairView):
         return response
 
 class SignUpView(APIView):
-    authentication_classes = ()
+    # authentication_classes = ()
     permission_classes     = ()
 
     def post(self,request):

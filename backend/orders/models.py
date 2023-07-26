@@ -7,14 +7,21 @@ from products.models import Product
 
 class Order(models.Model):
     # id
-    user_id      = models.ForeignKey("main.User", on_delete=models.CASCADE)
+    user         = models.ForeignKey("main.User", on_delete=models.CASCADE)
     details      = models.ManyToManyField(Product, through="OrderProd")
     created_date = models.DateTimeField(default=timezone.now)
-    order_date   = models.DateTimeField()
+    order_date   = models.DateTimeField(null=True,blank=True)
     is_finished  = models.BooleanField(default=False)
+    
+    def quantity(self, instance):
+        return instance.quantity
     
     
 class OrderProd(models.Model):
-    product_id  = models.ForeignKey(Product, on_delete=models.CASCADE)
-    order_id    = models.ForeignKey(Order  ,  on_delete=models.CASCADE)
-    quantity    = models.IntegerField(default=0)
+    product      = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order        = models.ForeignKey(Order  ,  on_delete=models.CASCADE)
+    quantity     = models.IntegerField(default=0)
+    date         = models.DateTimeField(default=timezone.now)
+    # @property
+    def total_price(self):
+        return self.quantity*float(self.product.price)
