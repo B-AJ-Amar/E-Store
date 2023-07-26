@@ -13,9 +13,11 @@ class Order(models.Model):
     order_date   = models.DateTimeField(null=True,blank=True)
     is_finished  = models.BooleanField(default=False)
     
-    def quantity(self, instance):
-        return instance.quantity
-    
+    def total_price(self,user):
+        total = 0
+        for det in OrderProd.objects.filter(user=user,order=self):
+            total += det.quantity*det.product.price
+        return total
     
 class OrderProd(models.Model):
     product      = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -25,3 +27,6 @@ class OrderProd(models.Model):
     # @property
     def total_price(self):
         return self.quantity*float(self.product.price)
+    @property
+    def pdoduct_name(self):
+        return self.product.username
